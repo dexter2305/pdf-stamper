@@ -4,28 +4,40 @@ import com.itextpdf.text.pdf.PdfReader
 import com.itextpdf.text.pdf.PdfStamper
 import com.l8.stamper.LoggingServiceComponent
 import com.l8.stamper.domain.DomainError
+import com.l8.stamper.domain.Record
 
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import com.l8.stamper.domain.Record
+import java.io.OutputStream
 
 trait StamperServiceComponent {
 
-  val stamper: StamperService
+  def stamper: StamperService
 
   trait StamperService {
-    def stamp(template: File, data: Seq[Record]): Either[DomainError, File]
+    def stamp(template: Array[Byte], data: Seq[Record]): Seq[Array[Byte]]
   }
 }
 
-trait StamperServiceComponentWithItext extends StamperServiceComponent { requires: LoggingServiceComponent =>
+trait StamperServiceComponentWithItext extends StamperServiceComponent { 
 
   class StamperServiceWithItext extends StamperService {
-    override def stamp(template: File, data: Seq[Record]): Either[DomainError, File] = {
-      val reader  = new PdfReader(template.getAbsolutePath())
-      val headers = data.head.columns.keySet
-      
-      ???
+
+    private def stamp(reader: PdfReader, headers: Set[String], record: Record): Array[Byte] = {
+      val baos    = new ByteArrayOutputStream
+      val stamper = new PdfStamper(reader, baos)
+      headers.forall(key => stamper.getAcroFields().setField(key, record.columns(key)))
+      stamper.close()
+      baos.toByteArray()
+    }
+
+    override def stamp(templateAsByteArray: Array[Byte], data: Seq[Record]): Seq[Array[Byte]] = {
+      val reader: PdfReader           = new PdfReader(templateAsByteArray)
+      val headers: Set[String]        = data.head.columns.keySet
+      val byteArray: Seq[Array[Byte]] = data.map(record => stamp(reader, headers, record))
+      reader.close()
+      byteArray
     }
   }
 }

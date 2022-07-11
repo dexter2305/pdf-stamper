@@ -7,7 +7,7 @@ import scala.io.Source
 
 trait ParserComponent {
 
-  val datafileParser: Parser
+  def datafileParser: Parser
 
   trait Parser {
     def parse(data: File): Seq[Record]
