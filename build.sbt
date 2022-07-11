@@ -10,7 +10,7 @@ ThisBuild / watchBeforeCommand := Watch.clearScreen
 
 lazy val root = (project in file("."))
   .settings(
-    name := "ti-certgen",
+    name := "pdf-stamper",
     libraryDependencies ++= Seq(
       itext_xmlworker withJavadoc,
       itext_itextpdf withJavadoc,
