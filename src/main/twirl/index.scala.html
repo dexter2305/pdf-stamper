@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width" , initial-scale="1.0">
+  <meta http-equic="X-UA-Compatible" content="ie=edge">
+
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <title>PDF Stamper</title>
+</head>
+
+<body>
+  <header>
+
+  </header>
+
+  <section>
+
+    <div>
+      <h1>PDF Stamper</h1>
+      <h2><i>Create pdf instances from template</i></h2>
+      <form action="/generate" method="post" enctype="multipart/form-data">
+        <div>
+          <label for="template-file">Template pdf</label>
+          <input id="template-file" name="template-file" type=file required>
+        </div>
+        <div>
+          <label for="data-file">Data file</label>
+          <input type="file" id="data-file" name="data-file" required>
+        </div>
+
+        <div>
+          <div>
+            <button type="submit">Generate</button>
+          </div>
+          <div class="control">
+            <button type="reset">Reset</button>
+          </div>
+        </div>
+
+
+      </form>
+    </div>
+
+  </section>
+  <footer>
+
+  </footer>
+
+</body>
+
+</html>
