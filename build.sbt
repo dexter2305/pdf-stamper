@@ -7,7 +7,7 @@ ThisBuild / version            := "0.1.0-SNAPSHOT"
 ThisBuild / organization       := "com.l8.tools"
 ThisBuild / organizationName   := "swag"
 ThisBuild / watchBeforeCommand := Watch.clearScreen
-
+ThisBuild / scalacOptions := Seq("-deprecation")
 lazy val root = (project in file("."))
   .settings(
     name := "pdf-stamper",

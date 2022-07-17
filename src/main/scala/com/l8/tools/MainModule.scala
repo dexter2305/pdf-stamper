@@ -10,9 +10,16 @@ class MainModule {
 
     for {
       stamperModule <- StamperModule.create()
+      hostname = "localhost"
+      port = 8080
       api = stamperModule.controller.routes.orNotFound
-      _ <- BlazeServerBuilder[IO].bindHttp(8080, "localhost").withHttpApp(api).serve.compile.drain
-
+      _ <- BlazeServerBuilder[IO].bindHttp(port, hostname).withHttpApp(api).resource.use { _ =>
+        IO {
+          println(s"Go to: http://$hostname:$port/")
+          println("Press any key to exit ...")
+          scala.io.StdIn.readLine()
+        }
+      }
     } yield ()
   }
 }
