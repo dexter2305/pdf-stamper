@@ -7,7 +7,8 @@ ThisBuild / version            := "0.1.0-SNAPSHOT"
 ThisBuild / organization       := "com.l8.tools"
 ThisBuild / organizationName   := "swag"
 ThisBuild / watchBeforeCommand := Watch.clearScreen
-ThisBuild / scalacOptions := Seq("-deprecation")
+ThisBuild / scalacOptions      := Seq("-deprecation", "-Xlint:unused", "-Xlint:infer-any")
+
 lazy val root = (project in file("."))
   .settings(
     name := "pdf-stamper",
@@ -23,6 +24,7 @@ lazy val root = (project in file("."))
       slf4j_api withJavadoc,
       slf4j_scribe,
       scalaTest % Test withJavadoc,
-    ) ,
+    ),
   )
   .enablePlugins(SbtTwirl)
+Compile / mainClass := Some("com.l8.tools.Boot")
