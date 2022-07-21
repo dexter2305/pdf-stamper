@@ -1,7 +1,7 @@
 package com.l8.tools
 
 import cats.effect.IO
-import com.l8.tools.stamper.controller.StamperModule
+import com.l8.tools.stamper.StamperModule
 import org.http4s.blaze.server.BlazeServerBuilder
 
 class MainModule {

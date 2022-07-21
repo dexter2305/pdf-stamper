@@ -1,4 +1,4 @@
-package com.l8.tools.stamper.controller
+package com.l8.tools.stamper
 
 import cats.effect.IO
 

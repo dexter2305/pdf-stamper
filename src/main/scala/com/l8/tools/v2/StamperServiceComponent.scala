@@ -3,8 +3,8 @@ package com.l8.stamper.v2
 import com.itextpdf.text.pdf.PdfReader
 import com.itextpdf.text.pdf.PdfStamper
 import com.l8.stamper.LoggingServiceComponent
-import com.l8.stamper.domain.DomainError
-import com.l8.stamper.domain.Record
+import com.l8.stamper.v2.domain.DomainError
+import com.l8.stamper.v2.domain.Record
 
 import java.io.ByteArrayOutputStream
 import java.io.File
