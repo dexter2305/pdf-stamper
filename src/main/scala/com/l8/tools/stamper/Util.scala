@@ -44,24 +44,23 @@ object Util extends App {
     logger.info(s"number of data records :${parser.parse().size}")
     for {
       record <- parser.parse()
-      _           = logger.info(s"processing for ${record.columns.mkString("-")}}")
+      _           = logger.info(s"processing for ${record.columns.mkString(" ")}")
       templateDoc = new PdfReader(template)
       baos        = new ByteArrayOutputStream
       stamper     = new PdfStamper(templateDoc, baos)
       _           = for (header <- headers) {
-
         stamper.getAcroFields().setField(header, record.columns(header.trim))
         logger.info(s"setting fields $header: ${record.columns(header)}")
       }
-      _          = stamper.close
-      _          = baos.close
-      entryBytes = baos.toByteArray()
-      entryname  = if (headers.contains(entryNameField)) record.columns(entryNameField) else "Anonymous"
-      entryDn    = s"${entryname}_${System.nanoTime()}.pdf"
-      zipEntry   = new ZipEntry(entryDn)
-      _          = zipStream.putNextEntry(zipEntry)
-      _          = zipStream.write(entryBytes)
-      _          = logger.info(s"$entryDn written of size ${entryBytes.size} bytes")
+      _           = stamper.close
+      _           = baos.close
+      entryBytes  = baos.toByteArray()
+      entryname   = if (headers.contains(entryNameField)) record.columns(entryNameField) else "Anonymous"
+      entryDn     = s"${entryname}_${System.nanoTime()}.pdf"
+      zipEntry    = new ZipEntry(entryDn)
+      _           = zipStream.putNextEntry(zipEntry)
+      _           = zipStream.write(entryBytes)
+      _           = logger.info(s"$entryDn written of size ${entryBytes.size} bytes")
     } yield ()
     templateReader.close
     zipStream.close()

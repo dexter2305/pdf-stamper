@@ -7,7 +7,7 @@ class SimpleParser(lines: Seq[String]) {
 
   def parse(): Seq[Record] = {
     for {
-      line <- lines.tail
+      line <- lines.tail if line.trim.length() > 0 && line.contains(",")
       values = line.split(",")
       record = Record(headers.zip(values).toMap)
     } yield record
