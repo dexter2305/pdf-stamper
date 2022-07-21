@@ -15,26 +15,34 @@ import org.typelevel.ci.CIString
 
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
+import org.slf4j.LoggerFactory
 
 class StamperController extends Http4sDsl[IO] {
+
   import domain._
+
+  val logger = LoggerFactory.getLogger(getClass())
+
   val routes = HttpRoutes.of[IO] {
     case GET -> Root                     => Ok(html.index())
     case req @ POST -> Root / "generate" => {
 
       req.decode[Multipart[IO]] { m =>
-        val template: Either[DomainError, Array[Byte]] = m.parts.find(_.name == Some("template")) match {
-          case Some(part) => Right(part.body.compile.toList.map(_.toArray).unsafeRunSync())
-          case None       => Left(DomainError("No template data found"))
-        }
         val data: Either[DomainError, Seq[String]]     = m.parts.find(_.name == Some("data")) match {
           case Some(part) => Right(part.body.through(utf8.decode).compile.toList.unsafeRunSync())
           case None       => Left(DomainError("No data file found"))
         }
+        val template: Either[DomainError, Array[Byte]] = m.parts.find(_.name == Some("template")) match {
+          case Some(part) => Right(part.body.compile.toList.map(_.toArray).unsafeRunSync())
+          case None       => Left(DomainError("No template data found"))
+        }
         (template, data) match {
           case (Right(template), Right(data)) =>
+            logger.info(s"template byte size: ${template.length}")
+            logger.info(s"csv data length ${data.size}")
             val zip: Array[Byte] = Util.process(template, data)
-            Ok(zip, Header.Raw.apply(CIString("Content-Type"), "application/zip"))
+            //Ok(zip, Header.Raw.apply(CIString("Content-Type"), "application/zip"))
+            Ok()
           case _                              => BadRequest("Invalid request")
         }
 
