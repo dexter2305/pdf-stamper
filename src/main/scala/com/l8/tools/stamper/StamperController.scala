@@ -32,17 +32,20 @@ class StamperController extends Http4sDsl[IO] {
             m.parts.find(_.name == Some("data")) match {
               case Some(datapart) =>
                 val dataLineStream = for {
-                  line <- datapart.body.through(utf8.decode)
+                  line <- datapart.body.through(utf8.decode).through(text.lines)
                 } yield line
 
-                Ok {
-                  for {
-                    templateBytes <- templateByteStream.compile.toList
-                    datalines     <- dataLineStream.compile.toList
-                    templateSize  = templateBytes.size
-                    dataLineCount = datalines.size
-                  } yield s"template size $templateSize && dataline count $dataLineCount"
-                }
+                for {
+                  templateBytes <- templateByteStream.compile.toList
+                  datalines     <- dataLineStream.compile.toList
+                  templateSize      = templateBytes.size
+                  dataLineCount     = datalines.size
+                  _                 = logger.info(s"template size:${templateSize} bytes && data lines received: $dataLineCount")
+                  templateByteArray = templateBytes.toArray
+                  zipByteArray      = Util.process(templateByteArray, datalines)
+                  response <- Ok(zipByteArray, Header.Raw(CIString("Content-Type"), "application/zip"))
+                } yield response
+
               case None => BadRequest("Missing data file")
             }
           }
