@@ -1,17 +1,15 @@
 package com.l8.tools.stamper
 
-import cats.effect.std.UUIDGen
 import com.itextpdf.text.pdf.PdfReader
 import com.itextpdf.text.pdf.PdfStamper
+import org.slf4j.LoggerFactory
 
 import java.io.ByteArrayOutputStream
-import java.util.zip.ZipEntry
-import java.util.zip.ZipOutputStream
 import java.io.FileInputStream
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.io.FileOutputStream
-import org.slf4j.LoggerFactory
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 object Util extends App {
 
