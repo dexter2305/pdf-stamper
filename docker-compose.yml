@@ -1,0 +1,9 @@
+version: '3.5'
+services:
+  pdf-stamper:
+    image: pdf-stamper:0.1.0
+    ports:
+      - target: 8080
+        published: 8080
+    restart: always
+  

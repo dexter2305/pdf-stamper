@@ -3,6 +3,7 @@ package com.l8.tools
 import cats.effect.IO
 import com.l8.tools.stamper.StamperModule
 import org.http4s.blaze.server.BlazeServerBuilder
+import java.net.InetAddress
 
 class MainModule {
 
@@ -10,16 +11,10 @@ class MainModule {
 
     for {
       stamperModule <- StamperModule.create()
-      hostname = "localhost"
-      port = 8080
-      api = stamperModule.controller.routes.orNotFound
-      _ <- BlazeServerBuilder[IO].bindHttp(port, hostname).withHttpApp(api).resource.use { _ =>
-        IO {
-          println(s"Go to: http://$hostname:$port/")
-          println("Press any key to exit ...")
-          scala.io.StdIn.readLine()
-        }
-      }
+      port = sys.env.get("HTTP_PORT").flatMap(_.toIntOption).getOrElse(8080)
+      host = sys.env.getOrElse("HTTP_HOST", InetAddress.getLocalHost.getHostName())
+      api  = stamperModule.controller.routes.orNotFound
+      _ <- BlazeServerBuilder[IO].bindHttp(port, host).withHttpApp(api).resource.use { x => IO.never }
     } yield ()
   }
 }

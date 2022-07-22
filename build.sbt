@@ -3,7 +3,7 @@ import Dependencies._
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 ThisBuild / scalaVersion       := "2.13.8"
-ThisBuild / version            := "0.1.0-SNAPSHOT"
+ThisBuild / version            := "0.1.0"
 ThisBuild / organization       := "com.l8.tools"
 ThisBuild / organizationName   := "swag"
 ThisBuild / watchBeforeCommand := Watch.clearScreen
@@ -25,6 +25,8 @@ lazy val root = (project in file("."))
       slf4j_scribe,
       scalaTest % Test withJavadoc,
     ),
+    Compile / mainClass := Some("com.l8.tools.Boot"),
+    Docker / dockerExposedPorts := Seq(8080),
   )
   .enablePlugins(SbtTwirl)
-Compile / mainClass := Some("com.l8.tools.Boot")
+  .enablePlugins(JavaAppPackaging)
