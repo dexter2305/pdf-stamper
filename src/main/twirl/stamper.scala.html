@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width" , initial-scale="1.0">
+  <meta http-equic="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./style.css">
+  <title>PDF Stamper</title>
+</head>
+
+<body class="font-sans text-gray-500 bg-gray-900">
+  <div class="m-32 p-2 flex flex-col flex-wrap">
+    <div class="pt-10 font-bold text-4xl">
+      <h1>PDF Stamper</h1>
+    </div>
+    <div class="pt-10 flex">
+      <section class="w-3/5">
+        <h2 class="font-semibold text-lg">Know how .. </h2>
+        <article class="pt-3">
+          <div class="italic">
+            (pdf template + csv data) => { pdf files }*
+          </div>
+          <div class="flex flex-col">
+            <div class="pt-8">
+              <header class="text-m italic">Create template in PDF</header>
+              <ul class="list-disc pl-8">
+                <li>Use named textfields to represent placeholders</li>
+                <li>Openoffice Slide provides tools to build form fields</li>
+                <li>Set as many named textfields required <span>- just remember names given to text fields</span></li>
+                <li>Export openoffice slide as pdf.</li>
+              </ul>
+            </div>
+            <div class="pt-8">
+              <header class="text-m italic">Create CSV file</header>
+              <ul class="list-disc pl-8">
+                <li>Set all the names of the textfields as the first row</li>
+                <li>In every row, feed values for every column separated by comma</li>
+              </ul>
+            </div>
+          </div>
+
+        </article>
+      </section>
+      <section class="border-gray-400 border-l-2 pl-10 w-1/5">
+        <h2 class="font-semibold text-lg">Try me </h2>
+        <form class="pt-3" action="/generate" method="post" enctype="multipart/form-data">
+          <div class="py-4">
+            <label for="template">Template file</label>
+            <input class="pt-2 block" type="file" id="template" name="template" required>
+          </div>
+          <div class="py-4">
+            <label for="data">CSV file</label>
+            <input class="pt-2" type="file" id="data" name="data" required>
+          </div>
+          <div class="pt-8 flex space-x-4">
+            <button class="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded"
+              type="submit">Stamp</button>
+            <button class="text-cyan-600 py-2 px-4 border rounded" type="reset">Clear</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+
+</body>
+
+</html>

@@ -20,7 +20,7 @@ class StamperController extends Http4sDsl[IO] {
   val logger = LoggerFactory.getLogger(getClass())
 
   val routes = HttpRoutes.of[IO] {
-    case GET -> Root                     => Ok(html.index())
+    case GET -> Root                     => Ok(html.stamper())
     case req @ POST -> Root / "generate" =>
       req.decode[Multipart[IO]] { m =>
         m.parts.find(_.name == Some("template")) match {
